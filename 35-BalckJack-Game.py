@@ -42,29 +42,57 @@ def getScore(cards):
     if card ==  "J" or card == "Q" or card == "K":
       cards[cards.index(card)] = 10
     elif card == "A":
-      cards[cards.index(card)] = 11
-  print(cards) 
+      cards.remove(card)
+      if sum(cards) >= 10:
+        cards.append(1)
+      else:
+        cards.append(11)
+        
   return sum(cards)
 
 def checkWinner(userScore, computerScore):
   print(f"Your final score is: {userScore}")
   print(f"Computer's final score is: {computerScore}")
-  if userScore > 21:
-    print("You went over. You Lose")
-  elif computerScore > 21:
-    print("Opponent went over. You Win")
-  elif userScore == computerScore:
+
+  if userScore == computerScore:
     print("Draw")
   elif userScore > computerScore:
     print("You Win")
   else:
     print("You Lose")
+
+def computerTurn(cards, userScore, round):
+  computerScore = getScore(cards)
+  if computerScore > 16 and round == 1:
+    return computerScore
+  else:  
+    if userScore > computerScore and computerScore < 21:
+      cards.append(r.choice(setOfCards))
+      round += 1
+      return computerTurn(cards, userScore,round)
+    else:
+      return computerScore
+
+def userTurn(cards):
+  userScore = getScore(cards)
+  if userScore > 21:
+    return userScore 
+  option = input("Type 'h' to get another card, type 's' to pass: ")
+  if option == "h":
+    cards.append(r.choice(setOfCards))
+    print(f"Your cards: {cards} - current score: {getScore(cards)}")
+    return userTurn(cards)
+  elif option == "s":
+    return userScore
+  else:
+    print("Invalid input")
+    sleep(2)
+    return userTurn(cards)
 # End of Game helpers Functions
 
 def game():
   userCards = [] # 2 cards + 1 card
   computerCards = [] # 2 cards + 1 card
-  
   
   # Get the first 2 cards for the user
   userCards = getCards(2)
@@ -75,15 +103,29 @@ def game():
   print(f"Your cards: {userCards}")
   print(f"Computer's first card: {computerCards[0]}")
   
-  option = input("Type 'y' to get another card, type 'n' to pass: ")
-  if option == "y":
-    userCards.append(getCards(1)[0])
-    computerCards.append(getCards(1)[0])
-    checkWinner(getScore(userCards), getScore(computerCards))
-  elif option == "n":
-    checkWinner(getScore(userCards), getScore(computerCards))
-    
-  sleep(10)
+  if getScore(userCards) == 21 and getScore(computerCards) == 21:
+    print("Tie!")
+    return
+  
+  if getScore(userCards) == 21:
+    print("Blackjack! You Win")
+    return
+  
+  if getScore(computerCards) == 21:
+    print("Blackjack! You Lose")
+    return
+  
+  userScore = userTurn(userCards)
+  if userScore > 21:
+    print("You went over. You Lose")
+    return
+  computerScore = computerTurn(computerCards, getScore(userCards), round=1)
+  if computerScore > 21:
+    print("Computer went over. You Win")
+    return
+  checkWinner(userScore, computerScore)
+
+  sleep(15)
 
 while init():
   game()
