@@ -1,10 +1,23 @@
 # Exercise: The Secret Auction
 from replit import clear
-logo = """  
 
+# bid logo
+logo = """
+                         ___________
+                         \         /
+                          )_______(
+                          |"""""""|_.-._,.---------.,_.-._
+                          |       | | |               | | ''-.
+                          |       |_| |_             _| |_..-'
+                          |_______| '-' `'---------'` '-'
+                          )"""""""(
+                         /_________\\
+                       .-------------.
+                      /_______________\\
 """
-
+print(logo)
 print("Welcome to the Secret Auction")
+
 
 bids = {}
 
