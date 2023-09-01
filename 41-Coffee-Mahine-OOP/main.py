@@ -28,7 +28,8 @@ while isOn:
   clear()
   choice = input(f"What would you like? {menu.printMenu()}: \nChoice -> ").lower()
   if choice == "off":
-    isOn = False  
+    isOn = False
+    moneyMachine.report()
   elif choice == "report":
     coffeeMaker.report()
     

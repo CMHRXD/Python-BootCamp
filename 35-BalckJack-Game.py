@@ -43,7 +43,7 @@ def getScore(cards):
       cards[cards.index(card)] = 10
     elif card == "A":
       cards.remove(card)
-      if sum(cards) >= 10:
+      if sum(cards) > 10:
         cards.append(1)
       else:
         cards.append(11)
